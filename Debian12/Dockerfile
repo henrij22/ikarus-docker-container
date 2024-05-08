@@ -1,5 +1,5 @@
 FROM debian:bookworm-slim
-#docker build --squash -t ikarusproject/debian12:latest . &> build.log
+#docker build --squash -t henrij22/debian12:latest . &> build.log
 LABEL maintainer=mueller@ibb.uni-stuttgart.de
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -66,7 +66,7 @@ RUN apt-get update -q -y && apt-get -y --no-install-recommends install build-ess
   cairosvg \
   "pybind11[global]" \
   scikit-build \
-  numpy==1.26.4 \
+  numpy \
   scipy \
   mpi4py \
   twine \
@@ -127,15 +127,6 @@ RUN wget https://apt.llvm.org/llvm.sh && \
      chmod +x llvm.sh && \
      ./llvm.sh 16 all
 
-RUN apt-add-repository "deb http://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-17 main"
-RUN wget https://apt.llvm.org/llvm.sh && \
-     chmod +x llvm.sh && \
-     ./llvm.sh 17 all
-
-RUN apt-add-repository "deb http://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-18 main"
-RUN wget https://apt.llvm.org/llvm.sh && \
-     chmod +x llvm.sh && \
-     ./llvm.sh 18 all
 
 RUN  update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 10
 RUN  update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 10
@@ -155,7 +146,7 @@ RUN mkdir -p iwyu && \
   cd ~ && \
   rm -rf iwyu
 
-RUN git clone --branch v3.11.3 --depth 1 https://github.com/nlohmann/json.git && \
+RUN git clone --branch v3.11.2 --depth 1 https://github.com/nlohmann/json.git && \
     cd json && \
     mkdir build && \
     cd build && \

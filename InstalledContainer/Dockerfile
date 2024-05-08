@@ -1,6 +1,6 @@
 ARG COMPILER="gcc"
 
-FROM ikarusproject/ikarus-dev-${COMPILER}:latest
+FROM henrij22/ikarus-dev-${COMPILER}:latest
 ARG branch "main"
 ENV BRANCH=${branch}
 USER root
@@ -9,8 +9,8 @@ ENV C_COMPILER=${ccompiler}
 
 ARG cppcompiler "g++-12"
 ENV CPP_COMPILER=${cppcompiler}
-#docker build --squash -t ikarusproject/ikarus-gcc:latest --build-arg compiler="gcc" --build-arg ccompiler="gcc-12" --build-arg cppcompiler="g++-12"  . &> build.log
-#docker build --squash -t ikarusproject/ikarus-clang:latest --build-arg compiler="clang" --build-arg ccompiler="clang-16" --build-arg cppcompiler="clang++-16"  . &> build.log
+#docker build --squash -t henrij22/ikarus-gcc:latest --build-arg compiler="gcc" --build-arg ccompiler="gcc-12" --build-arg cppcompiler="g++-12"  . &> build.log
+#docker build --squash -t henrij22/ikarus-clang:latest --build-arg compiler="clang" --build-arg ccompiler="clang-16" --build-arg cppcompiler="clang++-16"  . &> build.log
 
 
 ENV DEBIAN_FRONTEND "noninteractive"
