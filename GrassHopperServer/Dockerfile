@@ -1,4 +1,4 @@
-FROM ikarusproject/ikarus:latest
+FROM henrij22/ikarus:latest
 
 USER user
 

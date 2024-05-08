@@ -1,5 +1,5 @@
 FROM debian:bookworm-slim
-#docker build --squash -t ikarusproject/debian12:latest . &> build.log
+#docker build --squash -t henrij22/debian12:latest . &> build.log
 LABEL maintainer=mueller@ibb.uni-stuttgart.de
 
 ARG DEBIAN_FRONTEND=noninteractive
