@@ -1,6 +1,6 @@
 ARG COMPILER="gcc"
 
-FROM henrij22/ikarus-dev-${COMPILER}:experimental
+FROM henrij22/ikarus-dev-${COMPILER}:latest
 ARG branch "main"
 ENV BRANCH=${branch}
 USER root
