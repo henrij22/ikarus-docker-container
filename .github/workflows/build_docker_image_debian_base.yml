@@ -5,7 +5,6 @@
      branches:
        - 'main'
      paths:
-      - Debian12/**  
       - DuneBase/**  
 
    workflow_dispatch:

@@ -39,6 +39,9 @@ RUN mkdir -p dune && \
   dune-common/bin/dunecontrol   --cmake-opts="-DCMAKE_CXX_FLAGS='-O3' -DCMAKE_C_COMPILER=${C_COMPILER} -DCMAKE_CXX_COMPILER=${CPP_COMPILER} -DPython3_EXECUTABLE=/usr/bin/python -DPython3_INCLUDE_DIRS=/usr/include/python3.11/ -DDUNE_LOCALFEFUNCTIONS_USE_EIGEN=1 -DDUNE_PYTHON_ALLOW_GET_PIP=1 -DDUNE_ENABLE_PYTHONBINDINGS=TRUE -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20" cmake && \
   dune-common/bin/dunecontrol make
 
+RUN rm /dune/dune-grid/dune/python/grid/hierarchical.hh
+#COPY hierarchical.hh /dune/dune-grid/dune/python/grid/
+
 ENV CMAKE_PREFIX_PATH /dune/dune-geometry/build-cmake:/dune/dune-matrix-vector/build-cmake:/dune/dune-functions/build-cmake:/dune/dune-common/build-cmake:/dune/dune-localfunctions/build-cmake:/dune/dune-alugrid/build-cmake:/dune/dune-fufem/build-cmake:/dune/dune-typetree/build-cmake:/dune/dune-uggrid/build-cmake:/dune/dune-grid/build-cmake:/dune/dune-foamgrid/build-cmake:/dune/dune-istl/build-cmake:/dune/dune-grid-glue/build-cmake:/dune/dune-iga/build-cmake:/dune/dune-vtk/build-cmake:/dune/dune-localfefunctions/build-cmake:/dune/dune-curvedgrid/build-cmake:/dune/dune-curvedgeometry/build-cmake:/dune/dune-subgrid/build-cmake:
 
 ARG UID=1001
@@ -67,9 +70,6 @@ RUN apt-get auto-remove -y && \
   rm -rvf /var/cache/apt/archives/* && \
   apt-get -y remove  \
   software-properties-common
-
-RUN rm /dune/dune-grid/dune/python/grid/hierarchical.hh
-COPY hierarchical.hh /dune/dune-grid/dune/python/grid/
 
 
 # use python venv on start up
