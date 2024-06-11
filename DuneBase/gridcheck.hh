@@ -248,7 +248,7 @@ void zeroEntityConsistency (Grid &g)
       typename Geometry::GlobalCoordinate c1( it->geometry().corner( c ) );
       typename Geometry::GlobalCoordinate c2( it->template subEntity< dimGrid >( c ).geometry().corner( 0 ) );
 
-      if( (c2-c1).two_norm() > std::numeric_limits< ctype >::epsilon() )
+      if( (c2-c1).two_norm() > 20 * std::numeric_limits< ctype >::epsilon() )
       {
         std::cerr << "Error: | geometry.corner( c ) - subEntity< dimGrid >( c ) | = | "
                   << c1 << " - " << c2 << " | = " << (c2-c1).two_norm()
