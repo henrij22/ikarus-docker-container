@@ -42,6 +42,8 @@ RUN mkdir -p dune && \
 RUN rm /dune/dune-grid/dune/python/grid/hierarchical.hh
 COPY hierarchical.hh /dune/dune-grid/dune/python/grid/
 
+RUN rm dune/dune-grid/dune/grid/test/gridcheck.hh
+COPY gridcheck.hh dune/dune-grid/dune/grid/test/
 
 
 RUN cd /dune && \
