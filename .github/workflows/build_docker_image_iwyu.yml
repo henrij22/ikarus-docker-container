@@ -1,4 +1,4 @@
- name: Build Development Ikarus Docker Images
+ name: Build IWYU Image
 
  on:
    workflow_dispatch:

@@ -6,6 +6,11 @@ ENV CPP_COMPILER="clang-18"
 
 LABEL maintainer=jakob@ibb.uni-stuttgart.de
 
+USER root
+ENV DEBIAN_FRONTEND "noninteractive"
+ENV CI true
+EXPOSE 8000
+
 RUN git clone https://github.com/include-what-you-use/include-what-you-use.git && \
   cd include-what-you-use  && \
   git checkout clang_18 && \
