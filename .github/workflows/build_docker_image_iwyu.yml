@@ -1,0 +1,23 @@
+ name: Build Development Ikarus Docker Images
+
+ on:
+   workflow_dispatch:
+
+ jobs:
+   build-docker-debian:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v2
+       - name: Build the iwyu image
+         working-directory: ./iwyu
+         run: |
+           docker build . --file Dockerfile --tag henrij22/dunebase-clang-iwyu:latest
+       - name: Docker Login
+         uses: azure/docker-login@v1
+         with:
+           username: ${{ secrets.DOCKER_USERNAME }}
+           password: ${{ secrets.DOCKER_PASSWORD }}
+       - name: Publish the Docker image
+         run: |
+           docker push henrij22/dunebase-clang-iwyu:latest
