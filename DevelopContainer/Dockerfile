@@ -1,5 +1,5 @@
 
-ARG COMPILER "gcc"
+ARG compiler
 
 FROM henrij22/dunebase-${COMPILER}:latest
 ARG ccompiler "gcc-12"
