@@ -1,4 +1,4 @@
-ARG COMPILER="gcc"
+ARG COMPILER "gcc"
 
 FROM henrij22/ikarus-dev-${COMPILER}:latest
 ARG branch "main"
@@ -11,9 +11,6 @@ ARG cppcompiler "g++-12"
 ENV CPP_COMPILER=${cppcompiler}
 #docker build --squash -t henrij22/ikarus-gcc:latest --build-arg compiler="gcc" --build-arg ccompiler="gcc-12" --build-arg cppcompiler="g++-12"  . &> build.log
 #docker build --squash -t henrij22/ikarus-clang:latest --build-arg compiler="clang" --build-arg ccompiler="clang-16" --build-arg cppcompiler="clang++-16"  . &> build.log
-
-ENV DUNE_CMAKE_FLAGS=-DCMAKE_C_COMPILER=${ccompiler} -DCMAKE_CXX_COMPILER=${cppcompiler}
-
 
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV CI true
