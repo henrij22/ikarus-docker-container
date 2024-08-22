@@ -1,7 +1,7 @@
 
-ARG compiler
+ARG compiler "gcc"
 
-FROM henrij22/dunebase-${COMPILER}:latest
+FROM henrij22/dunebase-${compiler}:latest
 ARG ccompiler "gcc-12"
 ENV C_COMPILER=${ccompiler}
 
