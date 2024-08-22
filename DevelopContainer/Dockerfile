@@ -8,8 +8,10 @@ ENV C_COMPILER=${ccompiler}
 ARG cppcompiler "g++-12"
 ENV CPP_COMPILER=${cppcompiler}
 
+ENV DUNE_CMAKE_FLAGS=-DCMAKE_C_COMPILER=${ccompiler} -DCMAKE_CXX_COMPILER=${cppcompiler}
 
 LABEL maintainer=mueller@ibb.uni-stuttgart.de
+
 
 RUN cd dune && \
   git clone https://github.com/rath3t/dune-iga.git  && \
