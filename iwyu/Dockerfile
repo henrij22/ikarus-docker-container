@@ -23,9 +23,9 @@ RUN git clone https://github.com/include-what-you-use/include-what-you-use.git &
 # Install gismo
 
 # C compiler              : {clang-6.0,clang-7,clang-8,clang-9,clang-10,gcc-7,gcc-8,gcc-9,gcc-10,gcc-11}
-ARG CC=clang16
+ARG CC=clang-16
 # C++ compiler            : {clang++-6.0,clang++-7,clang++-8,clang++-9,clang++-10,g++-7,g++-8,g++-9,g++-10,g++-11}
-ARG CXX=clang16
+ARG CXX=clang++-16
 
 # Fortran compiler        : {gfortran-7,gfortran-8,gfortran-9,gfortran-10,gfortran-11}
 ARG FC=na
