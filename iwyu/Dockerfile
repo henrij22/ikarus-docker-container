@@ -1,7 +1,7 @@
-FROM henrij22/dunebase-clang:latest
-ENV C_COMPILER="clang-18"
+FROM henrij22/ikarus-dev-clang:latest
+ENV C_COMPILER "clang-16"
 
-ENV CPP_COMPILER="clang-18"
+ENV CPP_COMPILER "clang++-16"
 
 
 LABEL maintainer=jakob@ibb.uni-stuttgart.de
@@ -13,10 +13,10 @@ EXPOSE 8000
 
 RUN git clone https://github.com/include-what-you-use/include-what-you-use.git && \
   cd include-what-you-use  && \
-  git checkout clang_18 && \
+  git checkout clang_16 && \
   cd .. && \
   mkdir build && cd build && \
-  cmake -G "Unix Makefiles" -DCMAKE_PREFIX_PATH=/usr/lib/llvm-18 ../include-what-you-use && \
+  cmake -DCMAKE_PREFIX_PATH=/usr/lib/llvm-16 -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_CXX_COMPILER=$CPP_COMPILER  ../include-what-you-use && \
   make
 
 
