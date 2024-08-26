@@ -15,7 +15,7 @@ ENV C_COMPILER=${ccompiler}
 ARG cppcompiler "g++-12"
 ENV CPP_COMPILER=${cppcompiler}
 
-ENV DUNE_CMAKE_FLAGS=-DCMAKE_C_COMPILER=${ccompiler}\ -DCMAKE_CXX_COMPILER=${cppcompiler}
+ENV DUNE_CMAKE_FLAGS=-DCMAKE_CXX_FLAGS='-O3' -DCMAKE_C_COMPILER=${C_COMPILER} -DCMAKE_CXX_COMPILER=${CPP_COMPILER} -DPython3_EXECUTABLE=/usr/bin/python -DPython3_INCLUDE_DIRS=/usr/include/python3.11/ -DDUNE_LOCALFEFUNCTIONS_USE_EIGEN=1 -DDUNE_PYTHON_ALLOW_GET_PIP=1 -DDUNE_ENABLE_PYTHONBINDINGS=TRUE -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20
 
 RUN mkdir -p dune && \
   cd dune && \
@@ -38,7 +38,7 @@ RUN mkdir -p dune && \
   git clone https://gitlab.mn.tu-dresden.de/iwr/dune-gmsh4.git && \
   git clone https://gitlab.dune-project.org/extensions/dune-vtk.git && \
   dune-common/bin/dunecontrol git checkout master && \
-  dune-common/bin/dunecontrol   --cmake-opts="-DCMAKE_CXX_FLAGS='-O3' -DCMAKE_C_COMPILER=${C_COMPILER} -DCMAKE_CXX_COMPILER=${CPP_COMPILER} -DPython3_EXECUTABLE=/usr/bin/python -DPython3_INCLUDE_DIRS=/usr/include/python3.11/ -DDUNE_LOCALFEFUNCTIONS_USE_EIGEN=1 -DDUNE_PYTHON_ALLOW_GET_PIP=1 -DDUNE_ENABLE_PYTHONBINDINGS=TRUE -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20" cmake && \
+  dune-common/bin/dunecontrol   --cmake-opts=$DUNE_CMAKE_FLAGS cmake && \
   dune-common/bin/dunecontrol make
 
 
