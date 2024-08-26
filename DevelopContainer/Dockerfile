@@ -16,6 +16,6 @@ RUN cd dune && \
   cd dune-iga  && \
   git checkout main && \
   cd .. && \
-  ./dune-common/bin/dunecontrol --only=dune-iga --cmake-opts="$DUNE_CMAKE_FLAGS" cmake && \
+  ./dune-common/bin/dunecontrol --only=dune-iga --cmake-opts="$DUNE_MODULE_CMAKE_FLAGS" cmake && \
   ./dune-common/bin/dunecontrol --only=dune-iga make 
 
