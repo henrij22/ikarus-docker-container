@@ -44,12 +44,19 @@ RUN powershell.exe -Command `
     Expand-Archive C:\Ninja\Ninja.zip C:\Ninja ; `
     Remove-Item  C:\Ninja\Ninja.zip -Force
 
+# Install 7-zip for extracting large files
+RUN powershell.exe -Command `
+    $ErrorActionPreference = 'Stop'; `
+    curl -s -L https://www.7-zip.org/a/7z1900-x64.msi >  C:\7zip.msi -UseBasicParsing; `
+    Start-Process msiexec.exe -ArgumentList '/i C:\7zip.msi /quiet' -Wait ; 
+    #Remove-Item C:\7zip.msi -Force
+
 RUN mkdir C:\mingw
 
 RUN powershell.exe -Command `
     $ErrorActionPreference = 'Stop'; `
-    wget https://github.com/brechtsanders/winlibs_mingw/releases/download/12.4.0posix-12.0.0-ucrt-r1/winlibs-x86_64-posix-seh-gcc-12.4.0-mingw-w64ucrt-12.0.0-r1.zip -OutFile C:\mingw\mingw.zip ; `
-    Expand-Archive  C:\mingw\mingw.zip C:\mingw ; `
+    curl -s -L https://github.com/brechtsanders/winlibs_mingw/releases/download/12.4.0posix-12.0.0-ucrt-r1/winlibs-x86_64-posix-seh-gcc-12.4.0-mingw-w64ucrt-12.0.0-r1.zip > C:\mingw\mingw.zip -UseBasicParsing; `
+    & 'C:\Program Files\7-Zip\7z.exe' x C:\mingw\mingw.zip -oC:\mingw ; `
     Remove-Item C:\mingw\mingw.zip -Force
 
 # Add MinGW to the PATH
@@ -58,7 +65,7 @@ RUN setx PATH "%PATH%;C:\mingw\mingw64\bin"
 # Install xz utility
 RUN powershell.exe -Command `
     $ErrorActionPreference = 'Stop'; `
-    wget https://tukaani.org/xz/xz-5.2.5-windows.zip -OutFile C:\xz.zip ; `
+    curl -s -L https://tukaani.org/xz/xz-5.2.5-windows.zip > C:\xz.zip ; `
     Expand-Archive C:\xz.zip -DestinationPath C:\xz ; `
     Remove-Item C:\xz.zip -Force ; `
     setx PATH "%PATH%;C:\xz\xz-5.2.5-windows\bin"
@@ -68,7 +75,7 @@ RUN mkdir C:\clang
 
 RUN powershell.exe -Command `
     $ErrorActionPreference = 'Stop'; `
-    wget https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-pc-windows-msvc.tar.xz -OutFile C:\clang\llvm.tar.xz ; `
+    curl -s -L https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-pc-windows-msvc.tar.xz > C:\clang\llvm.tar.xz -UseBasicParsing; `
     tar -xf C:\clang\llvm.tar.xz -C C:\clang --strip-components=1 ; `
     Remove-Item C:\clang\llvm.tar.xz -Force
 
