@@ -44,19 +44,19 @@ RUN powershell.exe -Command `
     Expand-Archive C:\Ninja\Ninja.zip C:\Ninja ; `
     Remove-Item  C:\Ninja\Ninja.zip -Force
 
-# Install 7-zip for extracting large files
-RUN powershell.exe -Command `
-    $ErrorActionPreference = 'Stop'; `
-    curl -s -L https://www.7-zip.org/a/7z1900-x64.msi >  C:\7zip.msi -UseBasicParsing; `
-    Start-Process msiexec.exe -ArgumentList '/i C:\7zip.msi /quiet' -Wait ; 
-    #Remove-Item C:\7zip.msi -Force
+# # Install 7-zip for extracting large files
+# RUN powershell.exe -Command `
+#     $ErrorActionPreference = 'Stop'; `
+#     curl -s -L https://www.7-zip.org/a/7z1900-x64.msi >  C:\7zip.msi -UseBasicParsing; `
+#     Start-Process msiexec.exe -ArgumentList '/i C:\7zip.msi /quiet' -Wait ; 
+#     #Remove-Item C:\7zip.msi -Force
 
 RUN mkdir C:\mingw
 
 RUN powershell.exe -Command `
     $ErrorActionPreference = 'Stop'; `
     curl -s -L https://github.com/brechtsanders/winlibs_mingw/releases/download/12.4.0posix-12.0.0-ucrt-r1/winlibs-x86_64-posix-seh-gcc-12.4.0-mingw-w64ucrt-12.0.0-r1.zip > C:\mingw\mingw.zip -UseBasicParsing; `
-    & 'C:\Program Files\7-Zip\7z.exe' x C:\mingw\mingw.zip -oC:\mingw ; `
+    Expand-Archive C:\mingw\mingw.zip  -DestinationPath C:\mingw; `
     Remove-Item C:\mingw\mingw.zip -Force
 
 # Add MinGW to the PATH
