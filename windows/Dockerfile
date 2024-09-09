@@ -1,7 +1,7 @@
 # escape=`
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
 
-# this is taken from https://github.com/justiceadamsUNI/LLVM-Windows-Dockerfile/blob/master/DOCKERFILE
+# Inspiration from https://github.com/justiceadamsUNI/LLVM-Windows-Dockerfile/blob/master/DOCKERFILE
 
 # Setup admin user for certain LLVM build processes (Writing to pdb for example)
 RUN net user /add llvm-admin
@@ -44,6 +44,23 @@ RUN powershell.exe -Command `
     Expand-Archive C:\Ninja\Ninja.zip C:\Ninja ; `
     Remove-Item  C:\Ninja\Ninja.zip -Force
 
+# Install MinGW and gfortran compiler via direct download and setup
+RUN powershell.exe -Command `
+    $ErrorActionPreference = 'Stop'; `
+    wget https://nuwen.net/files/mingw/mingw-19.0.exe -OutFile C:\mingw-setup.exe ; `
+    Start-Process C:\mingw-setup.exe -ArgumentList '/SILENT' -Wait ; `
+    Remove-Item C:\mingw-setup.exe -Force
+
+# Add MinGW to the PATH
+RUN setx PATH "%PATH%;C:\MinGW\bin"
+
+# Install xz utility
+RUN powershell.exe -Command `
+    $ErrorActionPreference = 'Stop'; `
+    wget https://tukaani.org/xz/xz-5.2.5-windows.zip -OutFile C:\xz.zip ; `
+    Expand-Archive C:\xz.zip -DestinationPath C:\xz ; `
+    Remove-Item C:\xz.zip -Force ; `
+    setx PATH "%PATH%;C:\xz\xz-5.2.5-windows\bin"
 
 # Download and extract LLVM clang+llvm-18.1.8 into C:/clang
 RUN mkdir C:\clang
@@ -55,8 +72,7 @@ RUN powershell.exe -Command `
     Remove-Item C:\clang\llvm.tar.xz -Force
 
 
-# TODO add path
-
+RUN setx path "%path%;C:\Ninja\;C:\clang\bin"
 
 
 
