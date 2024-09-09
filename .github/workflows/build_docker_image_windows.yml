@@ -10,7 +10,7 @@
 
  jobs:
    build-docker-debian:
-     runs-on: ubuntu-latest
+     runs-on: windows-2019
 
      steps:
        - uses: actions/checkout@v4
@@ -19,7 +19,7 @@
          run: |
            docker build . --file Dockerfile --tag henrij22/windows:latest
 
-           
+
       #  - name: Docker Login
       #    uses: azure/docker-login@v1
       #    with:

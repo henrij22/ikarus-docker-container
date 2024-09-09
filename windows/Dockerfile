@@ -11,7 +11,6 @@ USER llvm-admin
 # Setup the shell.
 SHELL ["cmd", "/S", "/C"]
 
-
 RUN `
     # Download the Build Tools bootstrapper.
     curl -SL --output vs_buildtools.exe https://aka.ms/vs/16/release/vs_buildtools.exe `
