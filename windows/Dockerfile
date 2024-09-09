@@ -31,10 +31,10 @@ RUN `
 # Install Python
 RUN powershell.exe -Command `
     $ErrorActionPreference = 'Stop'; `
-    wget https://www.python.org/ftp/python/3.7.0/python-3.7.0-amd64.exe -OutFile c:\python-3.7.0.exe ; `
+    wget https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe -OutFile c:\python-3.7.0.exe ; `
     Start-Process c:\python-3.7.0.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -Wait ; `
     Remove-Item c:\python-3.7.0.exe -Force
-
+    
 # Download Ninja to use as our build system for speedier builds. (It's bettern than MSVC. Trust me)
 RUN mkdir C:\Ninja
 
@@ -44,43 +44,37 @@ RUN powershell.exe -Command `
     Expand-Archive C:\Ninja\Ninja.zip C:\Ninja ; `
     Remove-Item  C:\Ninja\Ninja.zip -Force
 
-# # Install 7-zip for extracting large files
+
+# Install GNuWin32 tools via Chocolatey for Lit testing
+RUN powershell -Command `
+	iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+RUN choco install -y gnuwin32-coreutils.install
+RUN choco install -y gnuwin
+RUN choco install -y mingw
+RUN choco install -y llvm
+
+
+
+# # Install xz utility
 # RUN powershell.exe -Command `
 #     $ErrorActionPreference = 'Stop'; `
-#     curl -s -L https://www.7-zip.org/a/7z1900-x64.msi >  C:\7zip.msi -UseBasicParsing; `
-#     Start-Process msiexec.exe -ArgumentList '/i C:\7zip.msi /quiet' -Wait ; 
-#     #Remove-Item C:\7zip.msi -Force
+#     curl -s -L https://tukaani.org/xz/xz-5.2.5-windows.zip > C:\xz.zip ; `
+#     Expand-Archive C:\xz.zip -DestinationPath C:\xz ; `
+#     Remove-Item C:\xz.zip -Force ; `
+#     setx PATH "%PATH%;C:\xz\xz-5.2.5-windows\bin"
 
-RUN mkdir C:\mingw
+# # Download and extract LLVM clang+llvm-18.1.8 into C:/clang
+# RUN mkdir C:\clang
 
-RUN powershell.exe -Command `
-    $ErrorActionPreference = 'Stop'; `
-    curl -s -L https://github.com/brechtsanders/winlibs_mingw/releases/download/12.4.0posix-12.0.0-ucrt-r1/winlibs-x86_64-posix-seh-gcc-12.4.0-mingw-w64ucrt-12.0.0-r1.zip > C:\mingw\mingw.zip -UseBasicParsing; `
-    Expand-Archive C:\mingw\mingw.zip  -DestinationPath C:\mingw; `
-    Remove-Item C:\mingw\mingw.zip -Force
-
-# Add MinGW to the PATH
-RUN setx PATH "%PATH%;C:\mingw\mingw64\bin"
-
-# Install xz utility
-RUN powershell.exe -Command `
-    $ErrorActionPreference = 'Stop'; `
-    curl -s -L https://tukaani.org/xz/xz-5.2.5-windows.zip > C:\xz.zip ; `
-    Expand-Archive C:\xz.zip -DestinationPath C:\xz ; `
-    Remove-Item C:\xz.zip -Force ; `
-    setx PATH "%PATH%;C:\xz\xz-5.2.5-windows\bin"
-
-# Download and extract LLVM clang+llvm-18.1.8 into C:/clang
-RUN mkdir C:\clang
-
-RUN powershell.exe -Command `
-    $ErrorActionPreference = 'Stop'; `
-    curl -s -L https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-pc-windows-msvc.tar.xz > C:\clang\llvm.tar.xz -UseBasicParsing; `
-    tar -xf C:\clang\llvm.tar.xz -C C:\clang --strip-components=1 ; `
-    Remove-Item C:\clang\llvm.tar.xz -Force
+# RUN powershell.exe -Command `
+#     $ErrorActionPreference = 'Stop'; `
+#     curl -s -L https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/clang+llvm-18.1.8-x86_64-pc-windows-msvc.tar.xz > C:\clang\llvm.tar.xz -UseBasicParsing; `
+#     tar -xf C:\clang\llvm.tar.xz -C C:\clang --strip-components=1 ; `
+#     Remove-Item C:\clang\llvm.tar.xz -Force
 
 
-RUN setx path "%path%;C:\Ninja\;C:\clang\bin"
+RUN setx path "%path%;C:\Ninja"
 
 
 
