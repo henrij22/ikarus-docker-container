@@ -34,7 +34,7 @@ RUN powershell.exe -Command `
     wget https://www.python.org/ftp/python/3.7.0/python-3.7.0-amd64.exe -OutFile c:\python-3.7.0.exe ; `
     Start-Process c:\python-3.7.0.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -Wait ; `
     Remove-Item c:\python-3.7.0.exe -Force
-	
+
 # Download Ninja to use as our build system for speedier builds. (It's bettern than MSVC. Trust me)
 RUN mkdir C:\Ninja
 
@@ -44,15 +44,16 @@ RUN powershell.exe -Command `
     Expand-Archive C:\Ninja\Ninja.zip C:\Ninja ; `
     Remove-Item  C:\Ninja\Ninja.zip -Force
 
-# Install MinGW and gfortran compiler via direct download and setup
+RUN mkdir C:\mingw
+
 RUN powershell.exe -Command `
     $ErrorActionPreference = 'Stop'; `
-    wget https://nuwen.net/files/mingw/mingw-19.0.exe -OutFile C:\mingw-setup.exe ; `
-    Start-Process C:\mingw-setup.exe -ArgumentList '/SILENT' -Wait ; `
-    Remove-Item C:\mingw-setup.exe -Force
+    wget https://github.com/brechtsanders/winlibs_mingw/releases/download/12.4.0posix-12.0.0-ucrt-r1/winlibs-x86_64-posix-seh-gcc-12.4.0-mingw-w64ucrt-12.0.0-r1.zip -OutFile C:\mingw\mingw.zip ; `
+    Expand-Archive  C:\mingw\mingw.zip C:\mingw ; `
+    Remove-Item C:\mingw\mingw.zip -Force
 
 # Add MinGW to the PATH
-RUN setx PATH "%PATH%;C:\MinGW\bin"
+RUN setx PATH "%PATH%;C:\mingw\mingw64\bin"
 
 # Install xz utility
 RUN powershell.exe -Command `
