@@ -1,5 +1,5 @@
 # escape=`
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8.1-windowsservercore-ltsc2022
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
 
 # this is taken from https://github.com/justiceadamsUNI/LLVM-Windows-Dockerfile/blob/master/DOCKERFILE
 
