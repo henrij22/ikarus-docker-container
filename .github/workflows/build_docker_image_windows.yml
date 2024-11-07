@@ -1,8 +1,8 @@
  name: Build Development Windows image
  on:
    push:
-     branches:
-       - 'main'
+    #  branches:
+    #    - 'main'
      paths:
       - windows/**  
 
@@ -10,7 +10,7 @@
 
  jobs:
    build-docker-debian:
-     runs-on: windows-latest
+     runs-on: windows-2019
 
      steps:
        - uses: actions/checkout@v4
@@ -19,13 +19,13 @@
          run: |
            docker build . --file Dockerfile --tag henrij22/windows:latest
 
-      #  - name: Docker Login
-      #    uses: azure/docker-login@v1
-      #    with:
-      #      username: ${{ secrets.DOCKER_USERNAME }}
-      #      password: ${{ secrets.DOCKER_PASSWORD }}
-      #  - name: Publish the Docker image
-      #    run: |
-      #      # docker push henrij22/dunebase-gcc:latest 
-      #      docker push henrij22/dunebase-clang:latest  
+
+       - name: Docker Login
+         uses: azure/docker-login@v1
+         with:
+           username: ${{ secrets.DOCKER_USERNAME }}
+           password: ${{ secrets.DOCKER_PASSWORD }}
+       - name: Publish the Docker image
+         run: |
+           docker push henrij22/windows:latest  
              
