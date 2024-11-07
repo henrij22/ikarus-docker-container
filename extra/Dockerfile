@@ -1,8 +1,13 @@
+ARG compiler "gcc"
+
 FROM ikarusproject/ikarus-dev-${compiler}:latest
-ENV C_COMPILER "clang-16"
 
-ENV CPP_COMPILER "clang++-16"
 
+ARG ccompiler "gcc-12"
+ENV C_COMPILER=${ccompiler}
+
+ARG cppcompiler "g++-12"
+ENV CPP_COMPILER=${cppcompiler}
 
 LABEL maintainer=jakob@ibb.uni-stuttgart.de
 
