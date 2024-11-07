@@ -9,7 +9,7 @@
 
      steps:
        - uses: actions/checkout@v2
-       - name: Build the iwyu image
+       - name: Build the extra image
          working-directory: ./extra
          run: |
           docker build . --file Dockerfile --tag henrij22/ikarus-dev-extra-gcc:latest --build-arg compiler="gcc" --build-arg ccompiler="gcc-12" --build-arg cppcompiler="g++-12"
