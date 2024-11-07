@@ -1,4 +1,4 @@
-FROM henrij22/ikarus-dev-clang:latest
+FROM ikarusproject/ikarus-dev-${compiler}:latest
 ENV C_COMPILER "clang-16"
 
 ENV CPP_COMPILER "clang++-16"
@@ -11,14 +11,19 @@ ENV DEBIAN_FRONTEND "noninteractive"
 ENV CI true
 EXPOSE 8000
 
-RUN git clone https://github.com/include-what-you-use/include-what-you-use.git && \
-  cd include-what-you-use  && \
-  git checkout clang_16 && \
-  cd .. && \
-  mkdir build && cd build && \
-  cmake -DCMAKE_PREFIX_PATH=/usr/lib/llvm-16 -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_CXX_COMPILER=$CPP_COMPILER  ../include-what-you-use && \
-  make
+# RUN git clone https://github.com/include-what-you-use/include-what-you-use.git && \
+#   cd include-what-you-use  && \
+#   git checkout clang_16 && \
+#   cd .. && \
+#   mkdir build && cd build && \
+#   cmake -DCMAKE_PREFIX_PATH=/usr/lib/llvm-16 -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_CXX_COMPILER=$CPP_COMPILER  ../include-what-you-use && \
+#   make
 
+
+# install muesli
+RUN git clone https://bitbucket.org/ignromero/muesli.git && \
+  cd muesli/muesli && \
+  make 
 
 # Install gismo
 
@@ -108,36 +113,38 @@ RUN git clone https://github.com/gismo/gismo.git gismo
 
 # Configure and build G+Smo library
 RUN cd gismo    && \
-    mkdir build && \
-    cd build    && \
-    CC=$CC \
-    CXX=$CXX \
-    FC=$FC \
-    cmake .. \
-        -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE \
-        -DCMAKE_CXX_STANDARD=$CMAKE_CXX_STANDARD \
-        -DCMAKE_INSTALL_PREFIX=$CMAKE_INSTALL_PREFIX \        
-        -DGISMO_BUILD_EXAMPLES=$GISMO_BUILD_EXAMPLES \
-        -DGISMO_BUILD_LIB=$GISMO_BUILD_LIB \
-        -DGISMO_BUILD_PCH=$GISMO_BUILD_PCH \
-        -DGISMO_BUILD_UNITTESTS=$GISMO_BUILD_UNITTESTS \
-        -DGISMO_COEFF_TYPE=$GISMO_COEFF_TYPE \
-        -DGISMO_INDEX_TYPE=$GISMO_INDEX_TYPE \
-        -DGISMO_SHORT_TYPE=$GISMO_SHORT_TYPE \
-        -DGISMO_OPTIONAL=$GISMO_OPTIONAL \
-        -DGISMO_WITH_ADIFF=$GISMO_WITH_ADIFF \
-        -DGISMO_WITH_MPI=$GISMO_WITH_MPI \
-        -DGISMO_WITH_OPENMP=$GISMO_WITH_OPENMP \
-        -DGISMO_WITH_PARDISO=$GISMO_WITH_PARDISO \
-        -DGISMO_WITH_PASTIX=$GISMO_WITH_PASTIX \
-        -DGISMO_WITH_PSOLID=$GISMO_WITH_PSOLID \
-        -DGISMO_WITH_SMESH=$GISMO_WITH_SMESH \
-        -DGISMO_WITH_SPECTRA=$GISMO_WITH_SPECTRA \
-        -DGISMO_WITH_SUPERLU=$GISMO_WITH_SUPERLU \
-        -DGISMO_WITH_TAUCS=$GISMO_WITH_TAUCS \
-        -DGISMO_WITH_UMFPACK=$GISMO_WITH_UMFPACK \
-        -DTARGET_ARCHITECTURE=$TARGET_ARCHITECTURE && \
-    make
-    
+  mkdir build && \
+  cd build    && \
+  CC=$CC \
+  CXX=$CXX \
+  FC=$FC \
+  cmake .. \
+  -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE \
+  -DCMAKE_CXX_STANDARD=$CMAKE_CXX_STANDARD \
+  -DCMAKE_INSTALL_PREFIX=$CMAKE_INSTALL_PREFIX \        
+  -DGISMO_BUILD_EXAMPLES=$GISMO_BUILD_EXAMPLES \
+  -DGISMO_BUILD_LIB=$GISMO_BUILD_LIB \
+  -DGISMO_BUILD_PCH=$GISMO_BUILD_PCH \
+  -DGISMO_BUILD_UNITTESTS=$GISMO_BUILD_UNITTESTS \
+  -DGISMO_COEFF_TYPE=$GISMO_COEFF_TYPE \
+  -DGISMO_INDEX_TYPE=$GISMO_INDEX_TYPE \
+  -DGISMO_SHORT_TYPE=$GISMO_SHORT_TYPE \
+  -DGISMO_OPTIONAL=$GISMO_OPTIONAL \
+  -DGISMO_WITH_ADIFF=$GISMO_WITH_ADIFF \
+  -DGISMO_WITH_MPI=$GISMO_WITH_MPI \
+  -DGISMO_WITH_OPENMP=$GISMO_WITH_OPENMP \
+  -DGISMO_WITH_PARDISO=$GISMO_WITH_PARDISO \
+  -DGISMO_WITH_PASTIX=$GISMO_WITH_PASTIX \
+  -DGISMO_WITH_PSOLID=$GISMO_WITH_PSOLID \
+  -DGISMO_WITH_SMESH=$GISMO_WITH_SMESH \
+  -DGISMO_WITH_SPECTRA=$GISMO_WITH_SPECTRA \
+  -DGISMO_WITH_SUPERLU=$GISMO_WITH_SUPERLU \
+  -DGISMO_WITH_TAUCS=$GISMO_WITH_TAUCS \
+  -DGISMO_WITH_UMFPACK=$GISMO_WITH_UMFPACK \
+  -DTARGET_ARCHITECTURE=$TARGET_ARCHITECTURE && \
+  make
+
 # Add directory of executables to search path
 ENV PATH $PATH:$CMAKE_INSTALL_PREFIX:$HOME/gismo/build/bin
+
+
