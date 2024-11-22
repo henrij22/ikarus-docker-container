@@ -1,0 +1,25 @@
+ name: Build Extra Image (build on official containers)
+
+ on:
+   workflow_dispatch:
+
+ jobs:
+   build-docker-debian:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v2
+       - name: Build the extra image
+         working-directory: ./extra
+         run: |
+          docker build . --file Dockerfile --tag henrij22/ikarus-dev-extra-gcc:latest --build-arg compiler="gcc" --build-arg ccompiler="gcc-12" --build-arg cppcompiler="g++-12"
+          docker build . --file Dockerfile --tag henrij22/ikarus-dev-extra-clang:latest --build-arg compiler="clang" --build-arg ccompiler="clang-16" --build-arg cppcompiler="clang++-16"
+       - name: Docker Login
+         uses: azure/docker-login@v1
+         with:
+           username: ${{ secrets.DOCKER_USERNAME }}
+           password: ${{ secrets.DOCKER_PASSWORD }}
+       - name: Publish the Docker image
+         run: |
+           docker push henrij22/ikarus-dev-extra-clang:latest
+           docker push henrij22/ikarus-dev-extra-gcc:latest

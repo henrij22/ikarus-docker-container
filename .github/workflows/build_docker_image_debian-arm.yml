@@ -1,0 +1,35 @@
+ name: Build Development Debian arm image
+ on:
+   push:
+     branches:
+       - 'main'
+     paths:
+      - Debian12/**  
+
+   workflow_dispatch:
+
+ jobs:
+   build-docker-debian:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v2
+       - name: Set up QEMU
+         uses: docker/setup-qemu-action@v3
+       - name: Set up Docker Buildx
+         uses: docker/setup-buildx-action@v3
+       - name: Build the Debian Docker image
+         working-directory: ./Debian12
+         run: |
+           docker build . --file Dockerfile-arm --tag henrij22/debian-arm:latest
+
+      #  - name: Docker Login
+      #    uses: azure/docker-login@v1
+      #    with:
+      #      username: ${{ secrets.DOCKER_USERNAME }}
+      #      password: ${{ secrets.DOCKER_PASSWORD }}
+      #  - name: Publish the Docker image
+      #    run: |
+      #      # docker push henrij22/dunebase-gcc:latest 
+      #      docker push henrij22/dunebase-clang:latest  
+             
