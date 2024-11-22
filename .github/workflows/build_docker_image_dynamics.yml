@@ -1,0 +1,23 @@
+ name: Build Dynamics Image
+
+ on:
+   workflow_dispatch:
+
+ jobs:
+   build-docker-debian:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v2
+       - name: Build the extra image
+         working-directory: ./extra
+         run: |
+          # docker build . --file Dockerfile --tag henrij22/ikarus-dynamics:latest --build-arg compiler="clang" --build-arg ccompiler="clang-16" --build-arg cppcompiler="clang++-16"
+       - name: Docker Login
+         uses: azure/docker-login@v1
+         with:
+           username: ${{ secrets.DOCKER_USERNAME }}
+           password: ${{ secrets.DOCKER_PASSWORD }}
+       - name: Publish the Docker image
+         run: |
+           henrij22/ikarus-dynamics:latest
