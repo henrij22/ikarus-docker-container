@@ -10,8 +10,6 @@ ENV CPP_COMPILER=${cppcompiler}
 
 LABEL maintainer=jakob@ibb.uni-stuttgart.de
 
-RUN --mount=type=secret,id=github_token,env=TIK_ACCESS_TOKEN,required=true
-
 USER root
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV CI true
@@ -30,8 +28,7 @@ RUN cd dune && \
   ./dune-common/bin/dunecontrol --only=dune-iga,dune-localfefunctions --cmake-opts="$DUNE_MODULE_CMAKE_FLAGS" cmake && \
   ./dune-common/bin/dunecontrol --only=dune-iga,dune-localfefunctions make 
 
-
-RUN git clone https://ac136110:${TIK_ACCESS_TOKEN}@github.tik.uni-stuttgart.de/ibb-ikarus/Ikarus.git && \
+RUN --mount=type=secret,id=github_token,env=TIK_ACCESS_TOKEN,required=true git clone https://ac136110:${TIK_ACCESS_TOKEN}@github.tik.uni-stuttgart.de/ibb-ikarus/Ikarus.git && \
   cd Ikarus && \
   git checkout MA/RMPlatesDynamics && \
   mkdir build && \
