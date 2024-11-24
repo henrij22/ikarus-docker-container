@@ -1,13 +1,16 @@
+# syntax=docker/dockerfile:1
+
 FROM ikarusproject/dunebase-clang:latest
 
-
-ARG ccompiler "gcc-12"
+ARG ccompiler 
 ENV C_COMPILER=${ccompiler}
 
-ARG cppcompiler "g++-12"
+ARG cppcompiler
 ENV CPP_COMPILER=${cppcompiler}
 
 LABEL maintainer=jakob@ibb.uni-stuttgart.de
+
+RUN --mount=type=secret,id=github_token,env=TIK_ACCESS_TOKEN,required=true
 
 USER root
 ENV DEBIAN_FRONTEND "noninteractive"
@@ -15,9 +18,9 @@ ENV CI true
 EXPOSE 8000
 
 RUN cd dune && \
-  git clone https://github.com/rath3t/dune-iga.git  && \
+  git clone https://github.com/henrij22/dune-iga.git  && \
   cd dune-iga  && \
-  git checkout feature/workOnCreateLvl && \
+  git checkout main && \
   cd / && \
   cd dune && \
   git clone  https://github.com/ikarus-project/dune-localfefunctions.git && \
@@ -28,12 +31,13 @@ RUN cd dune && \
   ./dune-common/bin/dunecontrol --only=dune-iga,dune-localfefunctions make 
 
 
-RUN git clone https://github.com/ikarus-project/Ikarus.git && \
+RUN git clone https://ac136110:${TIK_ACCESS_TOKEN}@github.tik.uni-stuttgart.de/ibb-ikarus/Ikarus.git && \
   cd Ikarus && \
-  git checkout feature/dynamics && \
+  git checkout MA/RMPlatesDynamics && \
   mkdir build && \
   cd build && \
   cmake .. $DUNE_MODULE_CMAKE_FLAGS && \
   cmake --build . --target ikarus && \
   cmake --install . 
 
+  
