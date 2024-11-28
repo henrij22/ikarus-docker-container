@@ -25,13 +25,13 @@ EXPOSE 8000
 #   make
 
 
-# install muesli
-RUN git clone https://bitbucket.org/ignromero/muesli.git && \
-  cd muesli/muesli && \
-  make 
-
-ENV CMAKE_PREFIX_PATH $CMAKE_PREFIX_PATH:$HOME/muesli/
-
+RUN git clone https://bitbucket.org/ignromero/muesli.git
+COPY patches/CMakeLists.txt /muesli
+COPY patches/Config.cmake.in /muesli
+RUN cd muesli && \
+  mkdir build &&  cd build && \
+  cmake .. && \
+  cmake --build . --target install --parallel 2  
 
 # # Install gismo
 
