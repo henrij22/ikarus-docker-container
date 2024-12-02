@@ -33,6 +33,21 @@ RUN cd muesli && \
   cmake .. && \
   cmake --build . --target install --parallel 2  
 
+
+
+RUN mkdir -p dune && \
+  cd dune && \
+  git clone https://gitlab.dune-project.org/extensions/dune-polygongrid.git && \
+  # git clone https://gitlab.mn.tu-dresden.de/iwr/dune-gmsh4.git && \
+  cd dune-polygongrid && \
+  git checkout master && \
+  cd .. && \
+  ./dune-common/bin/dunecontrol --only=dune-polygongrid  --cmake-opts="$DUNE_MODULE_CMAKE_FLAGS" cmake && \
+  ./dune-common/bin/dunecontrol --only=dune-polygongrid make
+
+
+ENV CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH}:/dune/dune-gmsh4/build-cmake:/dune/dune-polygongrid/build-cmake"
+
 # # Install gismo
 
 # # C compiler              : {clang-6.0,clang-7,clang-8,clang-9,clang-10,gcc-7,gcc-8,gcc-9,gcc-10,gcc-11}
