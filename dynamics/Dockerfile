@@ -28,9 +28,10 @@ RUN cd dune && \
   ./dune-common/bin/dunecontrol --only=dune-iga,dune-localfefunctions --cmake-opts="$DUNE_MODULE_CMAKE_FLAGS" cmake && \
   ./dune-common/bin/dunecontrol --only=dune-iga,dune-localfefunctions make 
 
-RUN --mount=type=secret,id=github_token,env=TIK_ACCESS_TOKEN,required=true git clone https://ac136110:${TIK_ACCESS_TOKEN}@github.tik.uni-stuttgart.de/ibb-ikarus/Ikarus.git && \
-  cd Ikarus && \
-  git checkout MA/RMPlatesDynamics && \
+# RUN --mount=type=secret,id=github_token,env=TIK_ACCESS_TOKEN,required=true git clone https://ac136110:${TIK_ACCESS_TOKEN}@github.tik.uni-stuttgart.de/ibb-ikarus/Ikarus.git && \
+RUN  git clone https://github.com/ikarus-project/ikarus.git && \
+  cd ikarus && \
+  git checkout feature/dynamics && \
   mkdir build && \
   cd build && \
   cmake .. $DUNE_MODULE_CMAKE_FLAGS && \
