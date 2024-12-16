@@ -75,6 +75,8 @@ write_basic_package_version_file(
   COMPATIBILITY AnyNewerVersion
 )
 
+add_compile_definitions("WITHEIGEN=1")
+
 # install the configuration file
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/MuesliConfig.cmake

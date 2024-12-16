@@ -78,6 +78,10 @@ write_basic_package_version_file(
 # Use -fPIC to generate position-independent code required for linking into shared libraries. 
 set_property(TARGET muesli PROPERTY POSITION_INDEPENDENT_CODE ON)
 
+add_compile_definitions("WITHEIGEN=1")
+find_package (Eigen3 3.3 REQUIRED)
+target_link_libraries(muesli Eigen3::Eigen)
+
 # install the configuration file
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/MuesliConfig.cmake
